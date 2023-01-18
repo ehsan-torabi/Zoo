@@ -71,17 +71,15 @@ class Manager {
     public static Animal findAnimal(int animalID) {
         for (Animal animal : Animal.liveAnimals) {
             if (animal.getAnimalID() == animalID) {
-                System.out.println("\s" + animal);
                 return animal;
             }
         }
         for (Animal animal : Animal.deadAnimals) {
             if (animal.getAnimalID() == animalID) {
-                System.out.println("\s" + animal);
                 return animal;
             }
         }
-        System.out.printf("Not found animal with ID : %d ):",animalID);
+        System.out.printf("Not found animal with ID : %d ):", animalID);
         return null;
     }
 
@@ -211,7 +209,7 @@ class Cat extends Animal {
     @Override
     protected void eatAnimal(Animal victim) {
         if (victim.getLiveStatus() == true) {
-            if (victim instanceof Mouse)
+            if (victim instanceof Mouse || victim instanceof Snake)
                 victim.dieByHunting(this);
             else
                 System.out.println("Not possible |:");

@@ -15,8 +15,7 @@ public class demo {
         g.goToZoo();
         Manager.addAnimal(new Cat());
         Manager.addAnimal(a);
-        Manager.addAnimal("LioN",1);
-        Manager.setHuntReport(g, a);
+        Manager.addAnimal("plant", 1);
         System.out.println(a.getHuntingStatus());
         Manager.getReport();
 
@@ -47,19 +46,17 @@ class Manager {
             for (int i = 0; i < count; i++) {
                 Animal.liveAnimals.add(new Mouse());
             }
-        }
-        else if (animalNameLCase.equals("plant")) {
+        } else if (animalNameLCase.equals("plant")) {
             for (int i = 0; i < count; i++) {
                 Animal.liveAnimals.add(new Plant());
             }
-        }
-        else{
+        } else {
             System.out.println("Please enter a valid name |:");
         }
 
     }
 
-    public static void addAnimal(Animal animal){
+    public static void addAnimal(Animal animal) {
         Animal.liveAnimals.add(animal);
     }
 
@@ -84,7 +81,7 @@ class Manager {
                 return animal;
             }
         }
-        System.out.println("In heyvan yaft nashod ):");
+        System.out.printf("Not found animal with ID : %d ):",animalID);
         return null;
     }
 
@@ -92,7 +89,7 @@ class Manager {
 
         if (liveStatus) {
             if (Animal.liveAnimals.size() == 0) {
-                System.out.println("Chizi vozjood nadarad ):");
+                System.out.println("Not found live animal ):");
                 return;
             }
             for (Animal animal : Animal.liveAnimals) {
@@ -103,7 +100,7 @@ class Manager {
         else {
             if (Animal.deadAnimals.size() == 0) {
 
-                System.out.println("Chizi vozjood nadarad ):");
+                System.out.println("Not found dead animal ):");
 
                 return;
             }
@@ -130,7 +127,7 @@ class Manager {
                 mouseCount++;
         }
         System.out.println("-------------------------------------------");
-        System.out.printf("Tedad heyvanat:\n \sCat: %d \n \sDog: %d \n \sLion: %d \n \sSnake: %d \n \sMouse: %d \n",
+        System.out.printf("Animal Count:\n \sCat: %d \n \sDog: %d \n \sLion: %d \n \sSnake: %d \n \sMouse: %d \n",
                 catCount, dogCount, lionCount, snakeCount, mouseCount);
         System.out.println("-------------------------------------------");
         System.out.println("Live Animals :");
@@ -153,7 +150,6 @@ abstract class Animal {
     private boolean isAlive = true;
 
     {
-
         this.animalID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
     }
 
@@ -168,7 +164,7 @@ abstract class Animal {
         String victimName = this.getClass().getSimpleName();
         int victimID = this.getAnimalID();
 
-        huntingStatus = String.format("%s ID: %d dar tarikh %s tavasot %s ID: %d khordeh shod |:", victimName, victimID,
+        huntingStatus = String.format("%s ID: %d in %s by %s ID: %d Hunted |:", victimName, victimID,
                 dtf.format(now),
                 hunterName,
                 hunterID);
@@ -195,13 +191,13 @@ abstract class Animal {
     }
 
     public String getHuntingStatus() {
-        return getLiveStatus() ? "In heyvan salem dar ghafas ast (: " : huntingStatus;
+        return getLiveStatus() ? "This animal is health (: " : huntingStatus;
     }
 
     @Override
     public String toString() {
         if (getLiveStatus())
-            return String.format("Type : %s - ID : %d - Status : Zendeh", this.getClass().getSimpleName(),
+            return String.format("Type : %s - ID : %d - Status : Live", this.getClass().getSimpleName(),
                     getAnimalID());
         else
             return String.format("Type : %s - ID : %d - Status : ( %s )", this.getClass().getSimpleName(),
@@ -218,7 +214,7 @@ class Cat extends Animal {
             if (victim instanceof Mouse)
                 victim.dieByHunting(this);
             else
-                System.out.println("Emkan pazir nist |:");
+                System.out.println("Not possible |:");
         } else {
             victim.dieByHunting(this);
         }
@@ -233,7 +229,7 @@ class Dog extends Animal {
             if (victim instanceof Cat)
                 victim.dieByHunting(this);
             else
-                System.out.println("Emkan pazir nist |:");
+                System.out.println("Not possible |:");
         } else {
             victim.dieByHunting(this);
         }
@@ -250,7 +246,7 @@ class Snake extends Animal {
             if (victim instanceof Mouse)
                 victim.dieByHunting(this);
             else
-                System.out.println("Emkan pazir nist |:");
+                System.out.println("Not possible |:");
         } else {
             victim.dieByHunting(this);
         }
@@ -277,7 +273,7 @@ class Mouse extends Animal {
             if (victim instanceof Plant)
                 victim.dieByHunting(this);
             else
-                System.out.println("Emkan pazir nist |:");
+                System.out.println("Not possible |:");
         } else {
             victim.dieByHunting(this);
         }
@@ -290,7 +286,7 @@ class Plant extends Animal {
 
     @Override
     protected void eatAnimal(Animal victim) {
-        System.out.println("giyah chizi nemikhorad <:");
+        System.out.println("Plant not eat <:");
 
     }
 

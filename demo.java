@@ -11,10 +11,9 @@ public class demo {
         Animal cat2 = new Cat();
         Animal snake = new Snake();
         Animal plant = new Plant();
-        // Manager.addAnimal("plant", 1);
         Manager.setLiveAnimal(mouse, false);
         mouse.eatAnimal(Manager.findAnimal(plant.getAnimalID()));
-        System.out.println(mouse.getHuntingStatus());
+        System.out.println(mouse.getLivingStatus());
         Manager.getFullReport();
 
     }
@@ -70,13 +69,13 @@ class Manager {
 
     /*
      * The setLiveAnimal method with two parameter animal and status :
-     * call setLiveStatus method in animal parameter and set live status to animal
+     * call setIsLive method in animal parameter and set live status to animal
      * parameter.
      * animal : Animal
      * status : bolean
      */
     public static void setLiveAnimal(Animal animal, boolean status) {
-        animal.setLiveStatus(status);
+        animal.setIsLive(status);
     }
 
     /*
@@ -150,6 +149,11 @@ class Manager {
 
     }
 
+    /*
+     * The getFullReport defines for print full report:
+     * first print animal counts and get Animals.liveAnimals.size() for total live
+     * animals.secend print each animal with full informatins.
+     */
     public static void getFullReport() {
         int catCount = 0, dogCount = 0, lionCount = 0, snakeCount = 0, mouseCount = 0, plantCount = 0;
         for (Animal animal : Animal.liveAnimals) {
@@ -183,48 +187,61 @@ class Manager {
 }
 
 abstract class Animal {
+    // define a static ArrayList for manage live animals
     static List<Animal> liveAnimals = new ArrayList<Animal>();
+    // define a static ArrayList for manage live animals
     static List<Animal> deadAnimals = new ArrayList<Animal>();
-    private String huntingStatus;
+    // livingStatus is a massage contains live or dead status
+    private String livingStatus;
+    // AnimalID is a primary key for an object as Animal class
     private int animalID;
+    // isAlive a variable to manage dead or live animal status. default true(live)
     private boolean isAlive = true;
+    // dtf is a time formatter for customize date and time format printing
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-    private LocalDateTime now = LocalDateTime.now();
 
-    {
+    { // Generate nearly random ID
         this.animalID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
+        // add to live Animals list in first object creation(Animal.liveAnimals)
         liveAnimals.add(this);
     }
 
+    // eat is a abstract method because different animals have different eat
+    // behavior
     abstract protected void eatAnimal(Animal victim);
 
     void dieByHunting(Animal hunter) {
-        setLiveStatus(false);
+        setIsLive(false);
         String hunterName = hunter.getClass().getSimpleName();
         int hunterID = hunter.getAnimalID();
         String victimName = this.getClass().getSimpleName();
         int victimID = this.getAnimalID();
 
-        setHuntingStatus(String.format("The %s with ID: %d eat the %s with ID: %d in %s ):", hunterName, hunterID,
+        setLivingStatus(String.format("The %s with ID: %d eat the %s with ID: %d in %s ):", hunterName, hunterID,
                 victimName,
                 victimID,
-                dtf.format(now)));
+                dtf.format(LocalDateTime.now())));
 
     }
 
-    // setLiveStatus method is a setter for isAlive property
-    public void setLiveStatus(boolean status) {
+    /*
+     * setIsLive method is a setter for isAlive property
+     * if status false : remove this animal as liveAnimals list and add to
+     * deadAnimals list. also call setLivingStatus and set reason of dead to
+     * "This animal is dead ):"
+     */
+    public void setIsLive(boolean status) {
         isAlive = status;
         if (status == false) {
             liveAnimals.remove(liveAnimals.indexOf(this));
             deadAnimals.add(this);
-            setHuntingStatus("This animal is dead ): ");
+            setLivingStatus("This animal is dead ): ");
         }
 
     }
 
-    // getLiveStatus method is a getter for isAlive property
-    public boolean getLiveStatus() {
+    // isAlive method is a getter for isAlive property
+    public boolean isAlive() {
         return isAlive;
 
     }
@@ -235,24 +252,24 @@ abstract class Animal {
 
     }
 
-    public String getHuntingStatus() {
-        return getLiveStatus() ? "This animal is health (: " : huntingStatus;
+    public String getLivingStatus() {
+        return isAlive() ? "This animal is health (: " : livingStatus;
     }
 
-    public void setHuntingStatus(String reason) {
-        huntingStatus = reason;
+    public void setLivingStatus(String reason) {
+        livingStatus = reason;
     }
 
     @Override
     public String toString() {
         String objectName = this.getClass().getSimpleName();
-        if (getLiveStatus())
+        if (isAlive())
             return String.format("Animal type : %s - ID : %d - Status : Live", objectName,
                     getAnimalID());
         else
             return String.format("Animal type : %s - ID : %d - Status : ( %s )", objectName,
                     getAnimalID(),
-                    getHuntingStatus());
+                    getLivingStatus());
     }
 
 }
@@ -260,7 +277,7 @@ abstract class Animal {
 class Cat extends Animal {
     @Override
     protected void eatAnimal(Animal victim) {
-        if (victim.getLiveStatus() == true) {
+        if (victim.isAlive() == true) {
             if (victim instanceof Mouse || victim instanceof Snake)
                 victim.dieByHunting(this);
             else
@@ -275,7 +292,7 @@ class Cat extends Animal {
 class Dog extends Animal {
     @Override
     protected void eatAnimal(Animal victim) {
-        if (victim.getLiveStatus() == true) {
+        if (victim.isAlive() == true) {
             if (victim instanceof Cat)
                 victim.dieByHunting(this);
             else
@@ -292,7 +309,7 @@ class Snake extends Animal {
 
     @Override
     protected void eatAnimal(Animal victim) {
-        if (victim.getLiveStatus() == true) {
+        if (victim.isAlive() == true) {
             if (victim instanceof Mouse)
                 victim.dieByHunting(this);
             else
@@ -319,7 +336,7 @@ class Mouse extends Animal {
 
     @Override
     protected void eatAnimal(Animal victim) {
-        if (victim.getLiveStatus() == true) {
+        if (victim.isAlive() == true) {
             if (victim instanceof Plant)
                 victim.dieByHunting(this);
             else

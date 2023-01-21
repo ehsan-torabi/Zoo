@@ -15,7 +15,7 @@ public class demo {
         Manager.setLiveAnimal(mouse, false);
         mouse.eatAnimal(Manager.findAnimal(plant.getAnimalID()));
         System.out.println(mouse.getHuntingStatus());
-        Manager.getReport();
+        Manager.getFullReport();
 
     }
 
@@ -150,7 +150,7 @@ class Manager {
 
     }
 
-    public static void getReport() {
+    public static void getFullReport() {
         int catCount = 0, dogCount = 0, lionCount = 0, snakeCount = 0, mouseCount = 0, plantCount = 0;
         for (Animal animal : Animal.liveAnimals) {
             if (animal instanceof Cat)

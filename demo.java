@@ -132,7 +132,7 @@ class Manager {
                 return;
             }
             for (Animal animal : Animal.liveAnimals) {
-                System.out.println("\s" + animal);
+                System.out.println(" " + animal);
             }
         }
 
@@ -143,7 +143,7 @@ class Manager {
                 return;
             }
             for (Animal animal : Animal.deadAnimals) {
-                System.out.println("\s" + animal);
+                System.out.println(" " + animal);
 
             }
         }
@@ -168,7 +168,7 @@ class Manager {
         }
         System.out.println("-------------------------------------------");
         System.out.printf(
-                "Animal Count:\n \sCat: %d \n \sDog: %d \n \sLion: %d \n \sSnake: %d \n \sMouse: %d \n \sPlant: %d \n \tTotal: %d\n",
+                "Animal Count:\n  Cat: %d \n  Dog: %d \n  Lion: %d \n  Snake: %d \n  Mouse: %d \n  Plant: %d \n \tTotal: %d\n",
                 catCount, dogCount, lionCount, snakeCount, mouseCount, plantCount, Animal.liveAnimals.size());
         System.out.println("-------------------------------------------");
         System.out.println("Live Animals :");

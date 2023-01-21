@@ -210,13 +210,23 @@ abstract class Animal {
     // behavior
     abstract protected void eatAnimal(Animal victim);
 
+    /*
+     * dieByHunting method call when this animal eat by the other animals
+     * hunter : Animal
+     */
     void dieByHunting(Animal hunter) {
+        // call setIsLive setter and set false status
         setIsLive(false);
+        // get hunter object class name
         String hunterName = hunter.getClass().getSimpleName();
+        // get hunter object animalID
         int hunterID = hunter.getAnimalID();
+        // get this object class name
         String victimName = this.getClass().getSimpleName();
+        // get this object animalID
         int victimID = this.getAnimalID();
-
+        // call setLivingStatus and send formated String with hunter name , hunter ID ,
+        // victim name ,victim ID and date of eat.
         setLivingStatus(String.format("The %s with ID: %d eat the %s with ID: %d in %s ):", hunterName, hunterID,
                 victimName,
                 victimID,
@@ -252,17 +262,27 @@ abstract class Animal {
 
     }
 
+    // getLivingStatus is a getter for living status property
+    // return if isAlive() true "This animal is health (: " , else livingStatus.
     public String getLivingStatus() {
         return isAlive() ? "This animal is health (: " : livingStatus;
     }
 
+    // setLivingStatus method is a setter for reason property
     public void setLivingStatus(String reason) {
         livingStatus = reason;
     }
 
     @Override
     public String toString() {
+        // get object Class name
         String objectName = this.getClass().getSimpleName();
+        /*
+         * if this.isAlive() true : return formated string with this form : this object
+         * class name , this object animalID ,Live
+         * if this.isAlive() false : retuen formated string with this form : this object
+         * name , this object animalID , this object livingStatus.
+         */
         if (isAlive())
             return String.format("Animal type : %s - ID : %d - Status : Live", objectName,
                     getAnimalID());
@@ -274,8 +294,12 @@ abstract class Animal {
 
 }
 
+// Create Cat type as animal
 class Cat extends Animal {
     @Override
+    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Mouse
+    // or if Snake call or Snake victim.dieByHunting method. else print error
+    // massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive() == true) {
             if (victim instanceof Mouse || victim instanceof Snake)
@@ -291,6 +315,8 @@ class Cat extends Animal {
 
 class Dog extends Animal {
     @Override
+    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Cat
+    // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive() == true) {
             if (victim instanceof Cat)
@@ -308,6 +334,8 @@ class Dog extends Animal {
 class Snake extends Animal {
 
     @Override
+    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Mouse
+    // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive() == true) {
             if (victim instanceof Mouse)
@@ -325,6 +353,7 @@ class Snake extends Animal {
 class Lion extends Animal {
 
     @Override
+    // impeliment eatAnimal behavior ; call victim.dieByHunting method.
     protected void eatAnimal(Animal victim) {
         victim.dieByHunting(this);
 
@@ -335,6 +364,8 @@ class Lion extends Animal {
 class Mouse extends Animal {
 
     @Override
+    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Plant
+    // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive() == true) {
             if (victim instanceof Plant)
@@ -352,6 +383,8 @@ class Mouse extends Animal {
 class Plant extends Animal {
 
     @Override
+    // impeliment eatAnimal behavior ; print error massage. Because Plant not eat
+    // anything.
     protected void eatAnimal(Animal victim) {
         System.out.println("The plant does not eat anything <:");
 

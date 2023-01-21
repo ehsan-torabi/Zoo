@@ -280,7 +280,7 @@ abstract class Animal {
         /*
          * if this.isAlive() true : return formated string with this form : this object
          * class name , this object animalID ,Live
-         * if this.isAlive() false : retuen formated string with this form : this object
+         * if this.isAlive() fals : retuen formated string with this form : this object
          * name , this object animalID , this object livingStatus.
          */
         if (isAlive())

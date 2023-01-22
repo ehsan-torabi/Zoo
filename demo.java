@@ -1,20 +1,24 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 public class demo {
 
     public static void main(String[] args) {
-        Animal mouse = new Mouse();
-        Animal cat1 = new Cat();
-        Animal cat2 = new Cat();
-        Animal snake = new Snake();
-        Animal plant = new Plant();
-        Manager.setLiveAnimal(mouse, false);
-        mouse.eatAnimal(Manager.findAnimal(plant.getAnimalID()));
-        System.out.println(mouse.getLivingStatus());
-        Manager.getFullReport();
+        // Animal mouse = new Mouse();
+        // Animal cat1 = new Cat();
+        // Animal cat2 = new Cat();
+        // Animal snake = new Snake();
+        // Animal plant = new Plant();
+        // Manager.setLiveAnimal(mouse, false);
+        // mouse.eatAnimal(Manager.findAnimal(plant.getAnimalID()));
+        // System.out.println(mouse.getLivingStatus());
+        // Manager.getFullReport();
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        
 
     }
 
@@ -100,12 +104,12 @@ class Manager {
      * null
      */
     public static Animal findAnimal(int animalID) {
-        for (Animal animal : Animal.liveAnimals) {
+        for (Animal animal : Animal.getLiveAnimalsList()) {
             if (animal.getAnimalID() == animalID) {
                 return animal;
             }
         }
-        for (Animal animal : Animal.deadAnimals) {
+        for (Animal animal : Animal.getDeadAnimalsList()) {
             if (animal.getAnimalID() == animalID) {
                 return animal;
             }
@@ -126,22 +130,22 @@ class Manager {
     public static void findAnimal(Boolean liveStatus) {
 
         if (liveStatus) {
-            if (Animal.liveAnimals.size() == 0) {
+            if (Animal.getLiveAnimalsList().size() == 0) {
                 System.out.println("Not found live animal ):");
                 return;
             }
-            for (Animal animal : Animal.liveAnimals) {
+            for (Animal animal : Animal.getLiveAnimalsList()) {
                 System.out.println(" " + animal);
             }
         }
 
         else {
-            if (Animal.deadAnimals.size() == 0) {
+            if (Animal.getDeadAnimalsList().size() == 0) {
 
                 System.out.println("Not found dead animal ):");
                 return;
             }
-            for (Animal animal : Animal.deadAnimals) {
+            for (Animal animal : Animal.getDeadAnimalsList()) {
                 System.out.println(" " + animal);
 
             }
@@ -156,7 +160,7 @@ class Manager {
      */
     public static void getFullReport() {
         int catCount = 0, dogCount = 0, lionCount = 0, snakeCount = 0, mouseCount = 0, plantCount = 0;
-        for (Animal animal : Animal.liveAnimals) {
+        for (Animal animal : Animal.getLiveAnimalsList()) {
             if (animal instanceof Cat)
                 catCount++;
             else if (animal instanceof Dog)
@@ -173,7 +177,7 @@ class Manager {
         System.out.println("-------------------------------------------");
         System.out.printf(
                 "Animal Count:\n  Cat: %d \n  Dog: %d \n  Lion: %d \n  Snake: %d \n  Mouse: %d \n  Plant: %d \n \tTotal: %d\n",
-                catCount, dogCount, lionCount, snakeCount, mouseCount, plantCount, Animal.liveAnimals.size());
+                catCount, dogCount, lionCount, snakeCount, mouseCount, plantCount, Animal.getLiveAnimalsList().size());
         System.out.println("-------------------------------------------");
         System.out.println("Live Animals :");
         findAnimal(true);
@@ -188,9 +192,9 @@ class Manager {
 
 abstract class Animal {
     // define a static ArrayList for manage live animals
-    static List<Animal> liveAnimals = new ArrayList<Animal>();
+    private static List<Animal> liveAnimals = new ArrayList<Animal>();
     // define a static ArrayList for manage live animals
-    static List<Animal> deadAnimals = new ArrayList<Animal>();
+    private static List<Animal> deadAnimals = new ArrayList<Animal>();
     // livingStatus is a massage contains live or dead status
     private String livingStatus;
     // AnimalID is a primary key for an object as Animal class
@@ -234,6 +238,14 @@ abstract class Animal {
 
     }
 
+
+    public static List<Animal> getLiveAnimalsList(){
+        return liveAnimals;
+    }
+
+    public static List<Animal> getDeadAnimalsList(){
+        return deadAnimals;
+    }
     /*
      * setIsLive method is a setter for isAlive property
      * if status false : remove this animal as liveAnimals list and add to

@@ -312,7 +312,7 @@ class Cat extends Animal {
     }
 
 }
-
+// Create Dog type as animal
 class Dog extends Animal {
     @Override
     // impeliment eatAnimal behavior ; check isAlive this and if victim is a Cat
@@ -330,7 +330,7 @@ class Dog extends Animal {
     }
 
 }
-
+// Create Snake type as animal
 class Snake extends Animal {
 
     @Override
@@ -349,7 +349,7 @@ class Snake extends Animal {
     }
 
 }
-
+// Create Lion type as animal
 class Lion extends Animal {
 
     @Override
@@ -360,7 +360,7 @@ class Lion extends Animal {
     }
 
 }
-
+// Create Mouse type as animal
 class Mouse extends Animal {
 
     @Override
@@ -379,7 +379,7 @@ class Mouse extends Animal {
     }
 
 }
-
+// Create Plant type as animal
 class Plant extends Animal {
 
     @Override

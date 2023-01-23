@@ -8,11 +8,10 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 
 public class demo {
-
+    static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         printMenu();
-        Scanner sc = new Scanner(System.in);
-        int input = sc.nextInt();
+        int input = scanner.nextInt();
         doOption(input);
 
     }
@@ -71,7 +70,7 @@ public class demo {
         System.out.println("-------------------------------------------------");
         System.out.println("0 - MainMenu\n1 - Continue");
         System.out.println("-------------------------------------------------");
-        Scanner scanner = new Scanner(System.in);
+        
         int close = scanner.nextInt();
         switch (close) {
             case 0:
@@ -86,7 +85,7 @@ public class demo {
 
     public static void menu_addAnimal() {
         System.out.println("\n1 - Cat\n2 - Dog\n3 - Lion\n4 - Snake\n5 - Mouse\n6 - Plant");
-        Scanner scanner = new Scanner(System.in);
+        
         System.out.print("Enter animal number : ");
         int choice = scanner.nextInt();
         String animal;
@@ -122,14 +121,14 @@ public class demo {
 
     public static void menu_findAnimalByID() {
         System.out.print("Enter animal ID: ");
-        Scanner scanner = new Scanner(System.in);
+        
         int ID = scanner.nextInt();
         System.out.println(Manager.findAnimal(ID));
     }
 
     public static void menu_registerHuntReport() {
         System.out.print("Enter hunter ID: ");
-        Scanner scanner = new Scanner(System.in);
+        
         int hunterID = scanner.nextInt();
         Animal hunter = Manager.findAnimal(hunterID);
         if (hunter == null)
@@ -158,7 +157,7 @@ public class demo {
 
     public static void menu_registerLiveStatus() {
         System.out.print("Enter animal ID: ");
-        Scanner scanner = new Scanner(System.in);
+        
         int animalID = scanner.nextInt();
         Animal animal = Manager.findAnimal(animalID);
         if (animal == null)

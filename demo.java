@@ -27,7 +27,7 @@ public class demo {
         System.out.println(" 5 - Print dead animals");
         System.out.println(" 6 - Registration of hunting report");
         System.out.println(" 7 - Registration of live status");
-        System.out.println(" 8 - Print zoo full report");
+        System.out.println(" 8 - Export zoo full report");
         System.out.println(" 0 - Exit");
         System.out.println("-------------------------------------------------");
         System.out.print("Please enter option number: ");

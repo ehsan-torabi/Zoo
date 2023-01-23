@@ -7,6 +7,11 @@ import java.io.FileWriter;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 
+/**
+ * @author Ehsan Torabi Farsani
+ * 
+ */
+
 public class demo {
     // Create a scanner for get inputs in demo class
     private static Scanner scanner = new Scanner(System.in);
@@ -88,6 +93,11 @@ public class demo {
             }
             break;
         }
+        menu_endOptins(value);
+
+    }
+
+    private static void menu_endOptins(int value) {
         System.out.println("\n-------------------------------------------------");
         // Print end process optins
         System.out.println("0 - MainMenu\n1 - Continue");
@@ -103,12 +113,15 @@ public class demo {
                 // call this method again for repeat process and continue
                 doOption(value);
                 break;
-        }
+            default:
+                main(null);
+                break;
 
+        }
     }
 
     // menu_addAnimal for add animal
-    public static void menu_addAnimal() {
+    private static void menu_addAnimal() {
         // Print options and number for select
         System.out.println("\n1 - Cat\n2 - Dog\n3 - Lion\n4 - Snake\n5 - Mouse\n6 - Plant\n");
         System.out.print("Enter animal number : ");
@@ -150,7 +163,7 @@ public class demo {
     }
 
     // menu_findAnimalByID for get animalID and find animal with ID
-    public static void menu_findAnimalByID() {
+    private static void menu_findAnimalByID() {
         System.out.print("Enter animal ID: ");
         // Get ID for send to Manager.findAnimal and get Animal with this ID
         int ID = scanner.nextInt();
@@ -159,7 +172,7 @@ public class demo {
     }
 
     // menu_registerHuntReport for submit hunt animals
-    public static void menu_registerHuntReport() {
+    private static void menu_registerHuntReport() {
         System.out.print("Enter hunter ID: ");
         // Get ID for send to Manager.findAnimal and get Animal (hunter) with this ID
         int hunterID = scanner.nextInt();
@@ -199,7 +212,7 @@ public class demo {
     }
 
     // menu_registerLiveStatus for submit change live status a animal
-    public static void menu_registerLiveStatus() {
+    private static void menu_registerLiveStatus() {
         System.out.print("Enter animal ID: ");
         // Get ID for send to Manager.findAnimal and get Animal with this ID
         int animalID = scanner.nextInt();
@@ -227,7 +240,7 @@ public class demo {
     }
 
     // menu_exportFullReport for export zoo animals report to a txt file
-    public static void menu_exportFullReport() {
+    private static void menu_exportFullReport() {
         // Source :
         // https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
         try {
@@ -460,22 +473,22 @@ abstract class Animal {
 
     // Generate a uniqe ID
     private int generateID() {
-        //generate nearly ID and temp save
+        // generate nearly ID and temp save
         int tempID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
-        //check ID in live animals
+        // check ID in live animals
         if (liveAnimals.size() > 0) {
             for (Animal animal : liveAnimals) {
                 if (animal.getAnimalID() == tempID)
                     generateID();
-            }}
-            if (deadAnimals.size() > 0) {
-                for (Animal animal : deadAnimals) {
-                    if (animal.getAnimalID() == tempID)
-                        generateID();
-                }
-
             }
-        
+        }
+        // check ID in dead animals
+        if (deadAnimals.size() > 0) {
+            for (Animal animal : deadAnimals) {
+                if (animal.getAnimalID() == tempID)
+                    generateID();
+            }
+        }
         return tempID;
     }
 
@@ -484,12 +497,6 @@ abstract class Animal {
      * hunter : Animal
      */
     protected void dieByHunting(Animal hunter) {
-        // Set IsLive to false
-        isAlive = false;
-        // Remove from liveAnimals
-        liveAnimals.remove(liveAnimals.indexOf(this));
-        // Add to deadAnimals
-        deadAnimals.add(this);
         // get hunter object class name
         String hunterName = hunter.getAnimalName();
         // get hunter object animalID
@@ -498,13 +505,24 @@ abstract class Animal {
         String victimName = this.getAnimalName();
         // get this object animalID
         int victimID = this.getAnimalID();
-        // call setLivingStatusMassage and send formated String with hunter name ,
-        // hunter ID ,
-        // victim name ,victim ID and date of eat.
-        setLivingStatusMassage(String.format("The %s with ID: %d eat the %s with ID: %d in %s ):", hunterName, hunterID,
-                victimName,
-                victimID,
-                dtf.format(LocalDateTime.now())));
+        // Checking the life of the animal and performing appropriate operations with it
+        if (isAlive() == false) {
+            // call setLivingStatusMassage and send formated String with hunter name ,
+            // hunter ID
+            setLivingStatusMassage(String.format(
+                    "This animal was already dead, but now its carcass was eaten by %s with ID %d .", hunterName,
+                    hunterID));
+        } else {
+            setIsLive(false);
+            // call setLivingStatusMassage and send formated String with hunter name ,
+            // hunter ID ,
+            // victim name ,victim ID and date of eat.
+            setLivingStatusMassage(
+                    String.format("The %s with ID: %d eat the %s with ID: %d in %s ):", hunterName, hunterID,
+                            victimName,
+                            victimID,
+                            dtf.format(LocalDateTime.now())));
+        }
 
     }
 
@@ -542,7 +560,7 @@ abstract class Animal {
         if (status == false) {
             liveAnimals.remove(liveAnimals.indexOf(this));
             deadAnimals.add(this);
-            setLivingStatusMassage("This animal is dead ): ");
+            setLivingStatusMassage("Dead ): ");
             isAlive = status;
         } else if (status == true) {
             if (this.isAlive() == false) {
@@ -580,21 +598,14 @@ abstract class Animal {
 
     @Override
     public String toString() {
-        // get object Class name
-        String objectName = this.getAnimalName();
+
         /*
-         * if this.isAlive() true : return formated string with this form : this object
-         * class name , this object animalID ,Live
-         * if this.isAlive() fals : retuen formated string with this form : this object
-         * name , this object animalID , this object livingStatus.
+         * return formated string with this form : this object
+         * class name , this object animalID (getAnimalName()) ,getLivingStatus
          */
-        if (isAlive())
-            return String.format("Animal type : %s - ID : %d - Status : Live (: ", objectName,
-                    getAnimalID());
-        else
-            return String.format("Animal type : %s - ID : %d - Status : ( %s )", objectName,
-                    getAnimalID(),
-                    getLivingStatus());
+        return String.format(" %s - ID : %d - Status : %s ", getAnimalName(),
+                getAnimalID(),
+                getLivingStatus());
     }
 
 }

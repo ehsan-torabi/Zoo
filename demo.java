@@ -445,9 +445,9 @@ abstract class Animal {
     // dtf is a time formatter for customize date and time format printing
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
-    { 
+    {
         // Generate nearly random ID
-        this.animalID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
+        animalID = generateID();
         // add to live Animals list in first object creation(Animal.liveAnimals)
         liveAnimals.add(this);
         // get object class name and set to animalName
@@ -458,11 +458,31 @@ abstract class Animal {
     // behavior
     abstract protected void eatAnimal(Animal victim);
 
+    // Generate a uniqe ID
+    private int generateID() {
+        //generate nearly ID and temp save
+        int tempID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
+        //check ID in live animals
+        if (liveAnimals.size() > 0) {
+            for (Animal animal : liveAnimals) {
+                if (animal.getAnimalID() == tempID)
+                    generateID();
+            }}
+            if (deadAnimals.size() > 0) {
+                for (Animal animal : deadAnimals) {
+                    if (animal.getAnimalID() == tempID)
+                        generateID();
+                }
+
+            }
+        
+        return tempID;
+    }
+
     /*
      * dieByHunting method call when this animal eat by the other animals
      * hunter : Animal
      */
-
     protected void dieByHunting(Animal hunter) {
         // Set IsLive to false
         isAlive = false;

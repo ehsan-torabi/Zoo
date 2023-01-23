@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 
 public class demo {
-    static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         printMenu();
         int input = scanner.nextInt();
@@ -70,7 +70,6 @@ public class demo {
         System.out.println("-------------------------------------------------");
         System.out.println("0 - MainMenu\n1 - Continue");
         System.out.println("-------------------------------------------------");
-        
         int close = scanner.nextInt();
         switch (close) {
             case 0:
@@ -85,7 +84,6 @@ public class demo {
 
     public static void menu_addAnimal() {
         System.out.println("\n1 - Cat\n2 - Dog\n3 - Lion\n4 - Snake\n5 - Mouse\n6 - Plant");
-        
         System.out.print("Enter animal number : ");
         int choice = scanner.nextInt();
         String animal;
@@ -121,14 +119,12 @@ public class demo {
 
     public static void menu_findAnimalByID() {
         System.out.print("Enter animal ID: ");
-        
         int ID = scanner.nextInt();
         System.out.println(Manager.findAnimal(ID));
     }
 
     public static void menu_registerHuntReport() {
         System.out.print("Enter hunter ID: ");
-        
         int hunterID = scanner.nextInt();
         Animal hunter = Manager.findAnimal(hunterID);
         if (hunter == null)
@@ -157,7 +153,6 @@ public class demo {
 
     public static void menu_registerLiveStatus() {
         System.out.print("Enter animal ID: ");
-        
         int animalID = scanner.nextInt();
         Animal animal = Manager.findAnimal(animalID);
         if (animal == null)

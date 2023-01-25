@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 /**
  * @author Ehsan Torabi Farsani
- * 
  */
 
 public class demo {
@@ -343,28 +342,23 @@ class Manager {
 
     /*
      * The findAnimal method with an animalID parameter :
-     * itrate to Animal.liveAnimals for find and print live animal with animalID
-     * property == animalID parameter.
-     * itrate to Animal.deadAnimals for find and print dead animal with animalID
+     * itrate to Animal.getAllAnimals() for find and print animal with animalID
      * property == animalID parameter.
      * animalID : int
      * return : if found Animal object , if not found print error massage and
      * null
      */
     public static Animal findAnimal(int animalID) {
-        for (Animal animal : Animal.getLiveAnimalsList()) {
+
+        for (Animal animal : Animal.getAllAnimals()) {
             if (animal.getAnimalID() == animalID) {
                 return animal;
             }
         }
-        for (Animal animal : Animal.getDeadAnimalsList()) {
-            if (animal.getAnimalID() == animalID) {
-                return animal;
-            }
-        }
-        System.out.printf("Not found animal with ID : %d ):\n", animalID);
-        return null;
+        System.out.printf("Not found animal with ID : %d ):\n",animalID);return null;
     }
+
+    
 
     /*
      * The findAnimal method with an animalID parameter :
@@ -470,6 +464,18 @@ abstract class Animal {
     // eat is a abstract method because different animals have different eat
     // behavior
     abstract protected void eatAnimal(Animal victim);
+
+    // itrate to liveAnimals and deadAnimals list and return a union list
+    public static ArrayList<Animal> getAllAnimals() {
+        ArrayList<Animal> resulList = new ArrayList<Animal>();
+        for (Animal deadAnimal : deadAnimals) {
+            resulList.add(deadAnimal);
+        }
+        for (Animal liveAnimal : liveAnimals) {
+            resulList.add(liveAnimal);
+        }
+        return resulList;
+    }
 
     // Generate a uniqe ID
     private int generateID() {

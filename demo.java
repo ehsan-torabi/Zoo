@@ -482,15 +482,8 @@ abstract class Animal {
         // generate nearly ID and temp save
         int tempID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
         // check ID in live animals
-        if (liveAnimals.size() > 0) {
-            for (Animal animal : liveAnimals) {
-                if (animal.getAnimalID() == tempID)
-                    generateID();
-            }
-        }
-        // check ID in dead animals
-        if (deadAnimals.size() > 0) {
-            for (Animal animal : deadAnimals) {
+        if (getAllAnimals().size() > 0) {
+            for (Animal animal : getAllAnimals()) {
                 if (animal.getAnimalID() == tempID)
                     generateID();
             }

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 import java.io.ByteArrayOutputStream;
@@ -202,8 +204,9 @@ public class demo {
                 break;
             case 1:
                 // Send hunter and victim to Manager.setHuntReport for submit gunt report
-                Manager.setHuntReport(hunter, victim);
-                System.out.println("Hunt report submited (: ");
+                Boolean isValid =  Manager.setHuntReport(hunter, victim);
+                if (isValid)
+                    System.out.println("Hunt report submited (: ");
                 break;
 
         }
@@ -336,8 +339,14 @@ class Manager {
      * hunter : Animal
      * victim : Animal
      */
-    public static void setHuntReport(Animal hunter, Animal victim) {
+    public static boolean setHuntReport(Animal hunter, Animal victim) {
         hunter.eatAnimal(victim);
+        if (victim.isAlive()){
+            return false;
+        }
+        else {
+            return true; 
+        }
     }
 
     /*
@@ -355,10 +364,9 @@ class Manager {
                 return animal;
             }
         }
-        System.out.printf("Not found animal with ID : %d ):\n",animalID);return null;
+        System.out.printf("Not found animal with ID : %d ):\n", animalID);
+        return null;
     }
-
-    
 
     /*
      * The findAnimal method with an animalID parameter :
@@ -372,7 +380,7 @@ class Manager {
     public static void findAnimal(Boolean liveStatus) {
 
         if (liveStatus) {
-            if (Animal.getLiveAnimalsList().size() == 0) {
+            if (Animal.getLiveAnimalsList().isEmpty()) {
                 System.out.println("Not found live animal ):");
                 return;
             }
@@ -382,7 +390,7 @@ class Manager {
         }
 
         else {
-            if (Animal.getDeadAnimalsList().size() == 0) {
+            if (Animal.getDeadAnimalsList().isEmpty()) {
 
                 System.out.println("Not found dead animal ):");
                 return;
@@ -401,37 +409,33 @@ class Manager {
      * animals.secend print each animal with full informatins.
      */
     public static void getFullReport() {
-        if (Animal.getLiveAnimalsList().size() == 0) {
-            System.out.println("Not found a animal ):");
+        List<Animal> liveAnimals = Animal.getLiveAnimalsList();
+        if (liveAnimals.isEmpty()) {
+            System.out.println("Not found an animal ):");
             return;
         }
-        int catCount = 0, dogCount = 0, lionCount = 0, snakeCount = 0, mouseCount = 0, plantCount = 0;
-        for (Animal animal : Animal.getLiveAnimalsList()) {
-            if (animal instanceof Cat)
-                catCount++;
-            else if (animal instanceof Dog)
-                dogCount++;
-            else if (animal instanceof Lion)
-                lionCount++;
-            else if (animal instanceof Snake)
-                snakeCount++;
-            else if (animal instanceof Mouse)
-                mouseCount++;
-            else if (animal instanceof Plant)
-                plantCount++;
+
+        Map<String, Integer> animalCounts = new HashMap<>();
+        for (Animal animal : liveAnimals) {
+            String className = animal.getClass().getSimpleName();
+            animalCounts.put(className, animalCounts.getOrDefault(className, 0) + 1);
         }
+
         System.out.println("-------------------------------------------");
-        System.out.printf(
-                "Animal Count:\n  Cat: %d \n  Dog: %d \n  Lion: %d \n  Snake: %d \n  Mouse: %d \n  Plant: %d \n \tTotal: %d\n",
-                catCount, dogCount, lionCount, snakeCount, mouseCount, plantCount, Animal.getLiveAnimalsList().size());
+        System.out.println("Animal Count:");
+        for (String className : animalCounts.keySet()) {
+            System.out.printf("  %s: %d\n", className, animalCounts.get(className));
+        }
+        System.out.printf("\tTotal: %d\n", liveAnimals.size());
         System.out.println("-------------------------------------------");
+
         System.out.println("Live Animals :");
         findAnimal(true);
         System.out.println("-------------------------------------------");
+
         System.out.println("Dead Animals :");
         findAnimal(false);
         System.out.println("-------------------------------------------");
-
     }
 
 }
@@ -480,9 +484,9 @@ abstract class Animal {
     // Generate a uniqe ID
     private int generateID() {
         // generate nearly ID and temp save
-        int tempID = (int) (Math.random() * 10) + 100 + (int) (Math.random() * 100);
+        int tempID = (int) (Math.random() * Math.random() * 10) + 101 + (int) (Math.random() * 100);
         // check ID in live animals
-        if (getAllAnimals().size() > 0) {
+        if (!getAllAnimals().isEmpty()) {
             for (Animal animal : getAllAnimals()) {
                 if (animal.getAnimalID() == tempID)
                     generateID();
@@ -505,7 +509,7 @@ abstract class Animal {
         // get this object animalID
         int victimID = this.getAnimalID();
         // Checking the life of the animal and performing appropriate operations with it
-        if (isAlive() == false) {
+        if (!isAlive()) {
             // call setLivingStatusMassage and send formated String with hunter name ,
             // hunter ID
             setLivingStatusMassage(String.format(
@@ -556,13 +560,13 @@ abstract class Animal {
             return;
         }
 
-        if (status == false) {
+        if (!status) {
             liveAnimals.remove(liveAnimals.indexOf(this));
             deadAnimals.add(this);
             setLivingStatusMassage("Dead ): ");
             isAlive = status;
-        } else if (status == true) {
-            if (this.isAlive() == false) {
+        } else if (status) {
+            if (!this.isAlive()) {
                 deadAnimals.remove(deadAnimals.indexOf(this));
                 liveAnimals.add(this);
                 setLivingStatusMassage("Live (: ");
@@ -591,8 +595,8 @@ abstract class Animal {
     }
 
     // setLivingStatusMassage method is a setter for reason property
-    public void setLivingStatusMassage(String reason) {
-        livingStatusMassge = reason;
+    public void setLivingStatusMassage(String message) {
+        livingStatusMassge = message;
     }
 
     @Override
@@ -616,7 +620,7 @@ class Cat extends Animal {
     // or if Snake call or Snake victim.dieByHunting method. else print error
     // massage.
     protected void eatAnimal(Animal victim) {
-        if (victim.isAlive() == true) {
+        if (victim.isAlive()) {
             if (victim instanceof Mouse || victim instanceof Snake)
                 victim.dieByHunting(this);
             else
@@ -634,7 +638,7 @@ class Dog extends Animal {
     // impeliment eatAnimal behavior ; check isAlive this and if victim is a Cat
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
-        if (victim.isAlive() == true) {
+        if (victim.isAlive()) {
             if (victim instanceof Cat)
                 victim.dieByHunting(this);
             else
@@ -654,7 +658,7 @@ class Snake extends Animal {
     // impeliment eatAnimal behavior ; check isAlive this and if victim is a Mouse
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
-        if (victim.isAlive() == true) {
+        if (victim.isAlive()) {
             if (victim instanceof Mouse)
                 victim.dieByHunting(this);
             else
@@ -673,9 +677,12 @@ class Lion extends Animal {
     @Override
     // impeliment eatAnimal behavior ; call victim.dieByHunting method.
     // The lion eats everything here. even grass (:
-    protected void eatAnimal(Animal victim) {
-        victim.dieByHunting(this);
 
+    protected void eatAnimal(Animal victim) {
+        if (!(victim instanceof Lion))
+            victim.dieByHunting(this);
+        else
+            System.out.println("Impossible |:");
     }
 
 }
@@ -687,7 +694,7 @@ class Mouse extends Animal {
     // impeliment eatAnimal behavior ; check isAlive this and if victim is a Plant
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
-        if (victim.isAlive() == true) {
+        if (victim.isAlive()) {
             if (victim instanceof Plant)
                 victim.dieByHunting(this);
             else

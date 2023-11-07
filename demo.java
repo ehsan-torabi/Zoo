@@ -616,7 +616,7 @@ abstract class Animal {
 // Create Cat type as animal
 class Cat extends Animal {
     @Override
-    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Mouse
+    // implement eatAnimal behavior ; check isAlive this and if victim is a Mouse
     // or if Snake call or Snake victim.dieByHunting method. else print error
     // massage.
     protected void eatAnimal(Animal victim) {
@@ -635,7 +635,7 @@ class Cat extends Animal {
 // Create Dog type as animal
 class Dog extends Animal {
     @Override
-    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Cat
+    // implement eatAnimal behavior ; check isAlive this and if victim is a Cat
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive()) {
@@ -655,7 +655,7 @@ class Dog extends Animal {
 class Snake extends Animal {
 
     @Override
-    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Mouse
+    // implement eatAnimal behavior ; check isAlive this and if victim is a Mouse
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive()) {
@@ -675,7 +675,7 @@ class Snake extends Animal {
 class Lion extends Animal {
 
     @Override
-    // impeliment eatAnimal behavior ; call victim.dieByHunting method.
+    // implement eatAnimal behavior ; call victim.dieByHunting method.
     // The lion eats everything here. even grass (:
 
     protected void eatAnimal(Animal victim) {
@@ -691,7 +691,7 @@ class Lion extends Animal {
 class Mouse extends Animal {
 
     @Override
-    // impeliment eatAnimal behavior ; check isAlive this and if victim is a Plant
+    // implement eatAnimal behavior ; check isAlive this and if victim is a Plant
     // call or Snake victim.dieByHunting method. else print error massage.
     protected void eatAnimal(Animal victim) {
         if (victim.isAlive()) {
@@ -711,7 +711,7 @@ class Mouse extends Animal {
 class Plant extends Animal {
 
     @Override
-    // impeliment eatAnimal behavior ; print error massage. Because Plant not eat
+    // implement eatAnimal behavior ; print error massage. Because Plant not eat
     // anything.
     protected void eatAnimal(Animal victim) {
         System.out.println("The plant does not eat anything <:");
